@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Test Collaudo</title>
+</head>
+<body>
+
+<h2 id="titolo"></h2>
+
+<input type="text" id="valore" placeholder="Valore">
+
+<br><br>
+
+<button onclick="precedente()">Indietro</button>
+<button onclick="successiva()">Avanti</button>
+
+<script>
+
+const prove = [
+"Controllo alimentazione",
+"Verifica fusibili",
+"Test salita",
+"Test discesa",
+"Test emergenza"
+];
+
+let pos = 0;
+
+function mostra(){
+ document.getElementById("titolo").innerText =
+ (pos+1)+" / "+prove.length+" - "+prove[pos];
+}
+
+function successiva(){
+ if(pos < prove.length-1){
+   pos++;
+   mostra();
+ }
+}
+
+function precedente(){
+ if(pos > 0){
+   pos--;
+   mostra();
+ }
+}
+
+mostra();
+
+</script>
+
+</body>
+</html>
