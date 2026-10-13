@@ -1,52 +1,209 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-<meta charset="utf-8">
-<title>Test Collaudo</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Collaudo Ascensori</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f0f2f5;
+    padding:15px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+}
+
+.box{
+    background:white;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.10);
+}
+
+h1{
+    text-align:center;
+    color:#003366;
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+    color:#333;
+}
+
+input[type=text],
+select,
+textarea{
+    width:100%;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:10px;
+    font-size:16px;
+}
+
+textarea{
+    resize:vertical;
+    min-height:100px;
+}
+
+.checkbox{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:10px;
+}
+
+.warning{
+    background:#fff3cd;
+    border-left:6px solid orange;
+}
+
+.warning h3{
+    color:#b35c00;
+    margin-bottom:10px;
+}
+
+button{
+    width:100%;
+    background:#0066cc;
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:15px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0052a3;
+}
+
+</style>
 </head>
+
 <body>
 
-<h2 id="titolo"></h2>
+<div class="container">
 
-<input type="text" id="valore" placeholder="Valore">
+    <h1>NUOVO COLLAUDO</h1>
 
-<br><br>
+    <div class="box">
 
-<button onclick="precedente()">Indietro</button>
-<button onclick="successiva()">Avanti</button>
+        <label>Cliente</label>
+
+        <select id="cliente">
+            <option>Cliente 1</option>
+            <option>Cliente 2</option>
+            <option>Cliente 3</option>
+        </select>
+
+    </div>
+
+    <div class="box">
+
+        <label>Tipo Impianto</label>
+
+        <select id="impianto">
+            <option>AUT 230</option>
+            <option>MAN 230</option>
+            <option>AUT 400</option>
+        </select>
+
+        <div class="checkbox">
+            <input type="checkbox" id="altro">
+            <label for="altro">
+                Mostra impianti non abituali
+            </label>
+        </div>
+
+    </div>
+
+    <div class="box">
+
+        <label>Riferimento Interno</label>
+        <input type="text" id="rifInterno">
+
+    </div>
+
+    <div class="box">
+
+        <label>Riferimento Cliente</label>
+        <input type="text" id="rifCliente">
+
+    </div>
+
+    <div class="box">
+
+        <label>Appunti</label>
+
+        <textarea id="appunti"></textarea>
+
+    </div>
+
+    <div class="box warning">
+
+        <h3>⚠ WARNING</h3>
+
+        <textarea id="warning">
+Verificare impostazioni particolari.
+
+Controllare timer DD.
+
+Verificare selettore VC.
+        </textarea>
+
+    </div>
+
+    <button onclick="creaCollaudo()">
+        CREA COLLAUDO
+    </button>
+
+</div>
 
 <script>
 
-const prove = [
-"Controllo alimentazione",
-"Verifica fusibili",
-"Test salita",
-"Test discesa",
-"Test emergenza"
-];
+function creaCollaudo(){
 
-let pos = 0;
+    let cliente =
+        document.getElementById("cliente").value;
 
-function mostra(){
- document.getElementById("titolo").innerText =
- (pos+1)+" / "+prove.length+" - "+prove[pos];
+    let impianto =
+        document.getElementById("impianto").value;
+
+    let rifInt =
+        document.getElementById("rifInterno").value;
+
+    let rifCli =
+        document.getElementById("rifCliente").value;
+
+    alert(
+        "COLLAUDO CREATO\n\n" +
+        "Cliente: " + cliente + "\n" +
+        "Impianto: " + impianto + "\n" +
+        "Rif. Interno: " + rifInt + "\n" +
+        "Rif. Cliente: " + rifCli
+    );
+
+    // QUI IN FUTURO SI APRIRA'
+    // LA SCHERMATA 2 DEL COLLAUDO
+
 }
-
-function successiva(){
- if(pos < prove.length-1){
-   pos++;
-   mostra();
- }
-}
-
-function precedente(){
- if(pos > 0){
-   pos--;
-   mostra();
- }
-}
-
-mostra();
 
 </script>
 
