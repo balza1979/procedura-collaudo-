@@ -24,6 +24,7 @@ user-scalable=no">
 html,
 body{
     touch-action:manipulation;
+    overscroll-behavior:none;
 }
 
 body{
@@ -55,17 +56,19 @@ label{
     display:block;
     margin-bottom:5px;
     font-weight:bold;
-    color:#333;
 }
 
 input[type=text],
 select,
 textarea{
+
     width:100%;
     padding:12px;
     font-size:18px;
+
     border:1px solid #ccc;
     border-radius:8px;
+
     min-height:55px;
 }
 
@@ -99,18 +102,17 @@ textarea{
 button{
     width:100%;
     min-height:65px;
+
     background:#0066cc;
     color:white;
+
     border:none;
     border-radius:10px;
-    padding:15px;
+
     font-size:20px;
     font-weight:bold;
-    cursor:pointer;
-}
 
-button:hover{
-    background:#0052a3;
+    cursor:pointer;
 }
 
 </style>
@@ -121,61 +123,258 @@ button:hover{
 
 <div class="container">
 
-    <h1>NUOVO COLLAUDO</h1>
+<h1>NUOVO COLLAUDO</h1>
 
-    <div class="box">
+<div class="box">
 
-        <label>Cliente</label>
+<label>Cliente</label>
 
-        <select id="cliente">
-            <option>Cliente 1</option>
-            <option>Cliente 2</option>
-            <option>Cliente 3</option>
-        </select>
+<select id="cliente" class="autosave">
+<option>Cliente 1</option>
+<option>Cliente 2</option>
+<option>Cliente 3</option>
+</select>
 
-    </div>
+</div>
 
-    <div class="box">
+<div class="box">
 
-        <label>Tipo Impianto</label>
+<label>Tipo Impianto</label>
 
-        <select id="impianto">
-            <option>AUT 230</option>
-            <option>MAN 230</option>
-            <option>AUT 400</option>
-        </select>
+<select id="impianto" class="autosave">
+<option>AUT 230</option>
+<option>MAN 230</option>
+<option>AUT 400</option>
+</select>
 
-        <div class="checkbox">
-            <input type="checkbox" id="altro">
-            <label for="altro">
-                Mostra impianti non abituali
-            </label>
-        </div>
+<div class="checkbox">
 
-    </div>
+<input
+type="checkbox"
+id="altro"
+class="autosave">
 
-    <div class="box">
+<label for="altro">
+Mostra impianti non abituali
+</label>
 
-        <label>Riferimento Interno</label>
-        <input type="text" id="rifInterno">
+</div>
 
-    </div>
+</div>
 
-    <div class="box">
+<div class="box">
 
-        <label>Riferimento Cliente</label>
-        <input type="text" id="rifCliente">
+<label>Riferimento Interno</label>
 
-    </div>
+<input
+type="text"
+id="rifInterno"
+class="autosave">
 
-    <div class="box">
+</div>
 
-        <label>Appunti</label>
+<div class="box">
 
-        <textarea id="appunti"></textarea>
+<label>Riferimento Cliente</label>
 
-    </div>
+<input
+type="text"
+id="rifCliente"
+class="autosave">
 
-    <div class="box warning">
+</div>
 
-        <h3>⚠
+<div class="box">
+
+<label>Appunti</label>
+
+<textarea
+id="appunti"
+class="autosave"></textarea>
+
+</div>
+
+<div class="box warning">
+
+<h3>⚠ WARNING</h3>
+
+<textarea
+id="warning"
+class="autosave">
+
+</textarea>
+
+</div>
+
+<button onclick="creaCollaudo()">
+CREA COLLAUDO
+</button>
+
+</div>
+
+<script>
+
+/* --------------------------
+   BLOCCO PULL TO REFRESH
+-------------------------- */
+
+let startY = 0;
+
+document.addEventListener(
+'touchstart',
+e => {
+
+startY = e.touches[0].clientY;
+
+},
+{ passive:false }
+);
+
+document.addEventListener(
+'touchmove',
+e => {
+
+let currentY =
+e.touches[0].clientY;
+
+if(
+window.scrollY === 0 &&
+currentY > startY
+){
+e.preventDefault();
+}
+
+},
+{ passive:false }
+);
+
+/* --------------------------
+   AUTOSALVATAGGIO
+-------------------------- */
+
+function salvaDati(){
+
+const dati = {
+
+cliente:
+document.getElementById("cliente").value,
+
+impianto:
+document.getElementById("impianto").value,
+
+altro:
+document.getElementById("altro").checked,
+
+rifInterno:
+document.getElementById("rifInterno").value,
+
+rifCliente:
+document.getElementById("rifCliente").value,
+
+appunti:
+document.getElementById("appunti").value,
+
+warning:
+document.getElementById("warning").value
+
+};
+
+localStorage.setItem(
+"collaudo_corrente",
+JSON.stringify(dati)
+);
+
+}
+
+/* --------------------------
+   RIPRISTINO
+-------------------------- */
+
+function caricaDati(){
+
+const salvato =
+localStorage.getItem(
+"collaudo_corrente"
+);
+
+if(!salvato) return;
+
+const dati =
+JSON.parse(salvato);
+
+document.getElementById("cliente").value =
+dati.cliente || "";
+
+document.getElementById("impianto").value =
+dati.impianto || "";
+
+document.getElementById("altro").checked =
+dati.altro || false;
+
+document.getElementById("rifInterno").value =
+dati.rifInterno || "";
+
+document.getElementById("rifCliente").value =
+dati.rifCliente || "";
+
+document.getElementById("appunti").value =
+dati.appunti || "";
+
+document.getElementById("warning").value =
+dati.warning || "";
+
+}
+
+document.addEventListener(
+"DOMContentLoaded",
+caricaDati
+);
+
+document.querySelectorAll(".autosave")
+.forEach(campo => {
+
+campo.addEventListener(
+"input",
+salvaDati
+);
+
+campo.addEventListener(
+"change",
+salvaDati
+);
+
+});
+
+/* --------------------------
+   AVVISO USCITA
+-------------------------- */
+
+window.addEventListener(
+"beforeunload",
+function(e){
+
+e.preventDefault();
+
+e.returnValue = "";
+
+}
+);
+
+/* --------------------------
+   CREA COLLAUDO
+-------------------------- */
+
+function creaCollaudo(){
+
+alert(
+"Versione 1\n\n" +
+"Prossimo passo:\n" +
+"apertura schermata collaudo."
+);
+
+}
+
+</script>
+
+</body>
+</html>
