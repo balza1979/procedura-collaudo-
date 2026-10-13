@@ -61,14 +61,11 @@ label{
 input[type=text],
 select,
 textarea{
-
     width:100%;
     padding:12px;
     font-size:18px;
-
     border:1px solid #ccc;
     border-radius:8px;
-
     min-height:55px;
 }
 
@@ -81,7 +78,7 @@ textarea{
     display:flex;
     align-items:center;
     gap:10px;
-    margin-top:10px;
+    margin-top:15px;
 }
 
 .checkbox input{
@@ -102,17 +99,22 @@ textarea{
 button{
     width:100%;
     min-height:65px;
-
     background:#0066cc;
     color:white;
-
     border:none;
     border-radius:10px;
-
     font-size:20px;
     font-weight:bold;
-
     cursor:pointer;
+}
+
+#dettagliImpianto{
+    margin-top:15px;
+    padding:12px;
+    background:#eef5ff;
+    border-left:5px solid #0066cc;
+    border-radius:8px;
+    white-space:pre-line;
 }
 
 </style>
@@ -125,27 +127,55 @@ button{
 
 <h1>NUOVO COLLAUDO</h1>
 
+<!-- CLIENTE -->
+
 <div class="box">
 
 <label>Cliente</label>
 
 <select id="cliente" class="autosave">
-<option>Cliente 1</option>
-<option>Cliente 2</option>
-<option>Cliente 3</option>
+    <option>Cliente 1</option>
+    <option>Cliente 2</option>
+    <option>Cliente 3</option>
 </select>
 
 </div>
+
+<!-- IMPIANTO -->
 
 <div class="box">
 
 <label>Tipo Impianto</label>
 
 <select id="impianto" class="autosave">
-<option>AUT 230</option>
-<option>MAN 230</option>
-<option>AUT 400</option>
+
+    <option value="AUT230">
+        AUT 230
+    </option>
+
+    <option value="MAN230">
+        MAN 230
+    </option>
+
+    <option value="AUT400">
+        AUT 400
+    </option>
+
 </select>
+
+<div id="dettagliImpianto">
+
+Impianto Automatico
+
+Tensione: 230 Vac
+
+Porte: Automatiche
+
+Rescue: Presente
+
+Scheda: Standard
+
+</div>
 
 <div class="checkbox">
 
@@ -162,6 +192,8 @@ Mostra impianti non abituali
 
 </div>
 
+<!-- RIF INTERNO -->
+
 <div class="box">
 
 <label>Riferimento Interno</label>
@@ -172,6 +204,8 @@ id="rifInterno"
 class="autosave">
 
 </div>
+
+<!-- RIF CLIENTE -->
 
 <div class="box">
 
@@ -184,6 +218,8 @@ class="autosave">
 
 </div>
 
+<!-- APPUNTI -->
+
 <div class="box">
 
 <label>Appunti</label>
@@ -194,15 +230,15 @@ class="autosave"></textarea>
 
 </div>
 
+<!-- WARNING -->
+
 <div class="box warning">
 
 <h3>⚠ WARNING</h3>
 
 <textarea
 id="warning"
-class="autosave">
-
-</textarea>
+class="autosave"></textarea>
 
 </div>
 
@@ -214,18 +250,16 @@ CREA COLLAUDO
 
 <script>
 
-/* --------------------------
+/* ------------------------
    BLOCCO PULL TO REFRESH
--------------------------- */
+------------------------ */
 
 let startY = 0;
 
 document.addEventListener(
 'touchstart',
 e => {
-
-startY = e.touches[0].clientY;
-
+    startY = e.touches[0].clientY;
 },
 { passive:false }
 );
@@ -234,143 +268,233 @@ document.addEventListener(
 'touchmove',
 e => {
 
-let currentY =
-e.touches[0].clientY;
+    let currentY =
+    e.touches[0].clientY;
 
-if(
-window.scrollY === 0 &&
-currentY > startY
-){
-e.preventDefault();
-}
+    if(
+        window.scrollY === 0 &&
+        currentY > startY
+    ){
+        e.preventDefault();
+    }
 
 },
 { passive:false }
 );
 
-/* --------------------------
-   AUTOSALVATAGGIO
--------------------------- */
+/* ------------------------
+   DETTAGLI IMPIANTI
+------------------------ */
 
-function salvaDati(){
+const dettagliImpianti = {
 
-const dati = {
+AUT230:
 
-cliente:
-document.getElementById("cliente").value,
+`Impianto Automatico
 
-impianto:
-document.getElementById("impianto").value,
+Tensione: 230 Vac
 
-altro:
-document.getElementById("altro").checked,
+Porte: Automatiche
 
-rifInterno:
-document.getElementById("rifInterno").value,
+Rescue: Presente
 
-rifCliente:
-document.getElementById("rifCliente").value,
+Scheda: Standard`,
 
-appunti:
-document.getElementById("appunti").value,
+MAN230:
 
-warning:
-document.getElementById("warning").value
+`Impianto Manuale
+
+Tensione: 230 Vac
+
+Porte: Manuali
+
+Rescue: Assente
+
+Scheda: MAN230`,
+
+AUT400:
+
+`Impianto Automatico
+
+Tensione: 400 Vac
+
+Porte: Automatiche
+
+Rescue: Presente
+
+Scheda: AUT400`
 
 };
 
-localStorage.setItem(
-"collaudo_corrente",
-JSON.stringify(dati)
-);
+/* ------------------------
+   AGGIORNA DETTAGLI
+------------------------ */
+
+function aggiornaDettagliImpianto(){
+
+    const impianto =
+    document.getElementById("impianto").value;
+
+    document.getElementById(
+        "dettagliImpianto"
+    ).innerText =
+    dettagliImpianti[impianto];
 
 }
 
-/* --------------------------
-   RIPRISTINO
--------------------------- */
+/* ------------------------
+   AUTOSALVATAGGIO
+------------------------ */
+
+function salvaDati(){
+
+    const dati = {
+
+        cliente:
+        document.getElementById("cliente").value,
+
+        impianto:
+        document.getElementById("impianto").value,
+
+        altro:
+        document.getElementById("altro").checked,
+
+        rifInterno:
+        document.getElementById("rifInterno").value,
+
+        rifCliente:
+        document.getElementById("rifCliente").value,
+
+        appunti:
+        document.getElementById("appunti").value,
+
+        warning:
+        document.getElementById("warning").value
+
+    };
+
+    localStorage.setItem(
+        "collaudo_corrente",
+        JSON.stringify(dati)
+    );
+
+}
+
+/* ------------------------
+   RIPRISTINO DATI
+------------------------ */
 
 function caricaDati(){
 
-const salvato =
-localStorage.getItem(
-"collaudo_corrente"
-);
+    const salvato =
+    localStorage.getItem(
+        "collaudo_corrente"
+    );
 
-if(!salvato) return;
+    if(!salvato) return;
 
-const dati =
-JSON.parse(salvato);
+    const dati =
+    JSON.parse(salvato);
 
-document.getElementById("cliente").value =
-dati.cliente || "";
+    document.getElementById("cliente").value =
+    dati.cliente || "";
 
-document.getElementById("impianto").value =
-dati.impianto || "";
+    document.getElementById("impianto").value =
+    dati.impianto || "AUT230";
 
-document.getElementById("altro").checked =
-dati.altro || false;
+    document.getElementById("altro").checked =
+    dati.altro || false;
 
-document.getElementById("rifInterno").value =
-dati.rifInterno || "";
+    document.getElementById("rifInterno").value =
+    dati.rifInterno || "";
 
-document.getElementById("rifCliente").value =
-dati.rifCliente || "";
+    document.getElementById("rifCliente").value =
+    dati.rifCliente || "";
 
-document.getElementById("appunti").value =
-dati.appunti || "";
+    document.getElementById("appunti").value =
+    dati.appunti || "";
 
-document.getElementById("warning").value =
-dati.warning || "";
+    document.getElementById("warning").value =
+    dati.warning || "";
 
 }
 
-document.addEventListener(
-"DOMContentLoaded",
-caricaDati
-);
+/* ------------------------
+   EVENTI AUTOSAVE
+------------------------ */
 
 document.querySelectorAll(".autosave")
 .forEach(campo => {
 
-campo.addEventListener(
-"input",
-salvaDati
-);
+    campo.addEventListener(
+        "input",
+        salvaDati
+    );
 
-campo.addEventListener(
-"change",
-salvaDati
-);
+    campo.addEventListener(
+        "change",
+        salvaDati
+    );
 
 });
 
-/* --------------------------
+/* ------------------------
+   AVVIO
+------------------------ */
+
+document.addEventListener(
+"DOMContentLoaded",
+function(){
+
+    caricaDati();
+
+    aggiornaDettagliImpianto();
+
+}
+);
+
+/* ------------------------
+   CAMBIO IMPIANTO
+------------------------ */
+
+document.getElementById("impianto")
+.addEventListener(
+"change",
+function(){
+
+    aggiornaDettagliImpianto();
+
+    salvaDati();
+
+}
+);
+
+/* ------------------------
    AVVISO USCITA
--------------------------- */
+------------------------ */
 
 window.addEventListener(
 "beforeunload",
 function(e){
 
-e.preventDefault();
+    e.preventDefault();
 
-e.returnValue = "";
+    e.returnValue = "";
 
 }
 );
 
-/* --------------------------
+/* ------------------------
    CREA COLLAUDO
--------------------------- */
+------------------------ */
 
 function creaCollaudo(){
 
-alert(
-"Versione 1\n\n" +
-"Prossimo passo:\n" +
-"apertura schermata collaudo."
-);
+    alert(
+        "COLLAUDO CREATO\n\n" +
+        "Prossimo step:\n" +
+        "apertura schermata esecuzione prove."
+    );
 
 }
 
