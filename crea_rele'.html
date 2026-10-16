@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no">
+
+<title>Test Componenti</title>
+
+<style>
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f2f2f2;
+    padding:15px;
+}
+
+.box{
+    background:white;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.10);
+}
+
+label{
+    display:block;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+input,
+select{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    margin-top:15px;
+    font-size:16px;
+}
+
+.contatto{
+    border:1px solid #ddd;
+    padding:10px;
+    border-radius:8px;
+    margin-top:10px;
+    background:#fafafa;
+}
+
+.riepilogo{
+    background:#eef5ff;
+    border-left:5px solid #0066cc;
+}
+
+h1{
+    text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>CREAZIONE COMPONENTE</h1>
+
+<div class="box">
+
+<label>Tipo componente</label>
+
+<select>
+
+<option>Relè 2 contatti</option>
+<option>Relè 4 contatti</option>
+<option>Mini Contattore</option>
+<option>Contattore</option>
+
+</select>
+
+<label>Sigla</label>
+<input id="sigla" type="text"
+placeholder="RFC"
+oninput="aggiornaRiepilogo()">
+
+<label>Descrizione</label>
+<input id="descrizione"
+type="text"
+placeholder="Relè Fine Sicurezze"
+oninput="aggiornaRiepilogo()">
+
+<label>Bobina</label>
+<input id="bobina"
+type="text"
+placeholder="48 Vac"
+oninput="aggiornaRiepilogo()">
+
+<label>Diodo</label>
+
+<select id="diodo"
+onchange="aggiornaRiepilogo()">
+
+<option>No</option>
+<option>Si</option>
+
+</select>
+
+<label>Filtro</label>
+
+<select id="filtro"
+onchange="aggiornaRiepilogo()">
+
+<option>No</option>
+<option>Si</option>
+
+</select>
+
+<label>Taglia Contattore</label>
+<input id="taglia"
+type="text"
+placeholder="9A / 12A / 18A">
+
+</div>
+
+<div class="box riepilogo">
+
+<h3>RIEPILOGO AUTOMATICO</h3>
+
+<div id="riepilogo">
+
+Nessun dato
+
+</div>
+
+</div>
+
+<div class="box">
+
+<h3>CONTATTI</h3>
+
+<div id="contenitoreContatti">
+
+</div>
+
+<button onclick="aggiungiContatto()">
+
++ AGGIUNGI CONTATTO
+
+</button>
+
+</div>
+
+<div class="box">
+
+<h3>CAMPI FUTURI</h3>
+
+<input type="text" placeholder="Campo libero 1">
+<br><br>
+
+<input type="text" placeholder="Campo libero 2">
+<br><br>
+
+<input type="text" placeholder="Campo libero 3">
+<br><br>
+
+<input type="text" placeholder="Campo libero 4">
+<br><br>
+
+<input type="text" placeholder="Campo libero 5">
+
+</div>
+
+<script>
+
+let numeroContatto = 0;
+
+function aggiungiContatto(){
+
+    numeroContatto++;
+
+    let html = `
+
+    <div class="contatto">
+
+        <h4>Contatto ${numeroContatto}</h4>
+
+        <label>Tipo</label>
+
+        <select
+            class="tipoContatto"
+            onchange="aggiornaRiepilogo()">
+
+            <option>NO</option>
+            <option>NC</option>
+            <option>SC</option>
+
+        </select>
+
+        <label>Pagina Schema</label>
+
+        <input
+            type="text"
+            placeholder="Pagina 4">
+
+        <label>Funzione</label>
+
+        <input
+            type="text"
+            placeholder="Controllo Contattori">
+
+    </div>
+
+    `;
+
+    document
+    .getElementById("contenitoreContatti")
+    .insertAdjacentHTML(
+        "beforeend",
+        html
+    );
+
+    aggiornaRiepilogo();
+
+}
+
+function aggiornaRiepilogo(){
+
+    let no = 0;
+    let nc = 0;
+    let sc = 0;
+
+    document
+    .querySelectorAll(".tipoContatto")
+    .forEach(c=>{
+
+        if(c.value==="NO") no++;
+        if(c.value==="NC") nc++;
+        if(c.value==="SC") sc++;
+
+    });
+
+    let sigla =
+    document
+    .getElementById("sigla")
+    .value;
+
+    let descrizione =
+    document
+    .getElementById("descrizione")
+    .value;
+
+    let bobina =
+    document
+    .getElementById("bobina")
+    .value;
+
+    let diodo =
+    document
+    .getElementById("diodo")
+    .value;
+
+    let filtro =
+    document
+    .getElementById("filtro")
+    .value;
+
+    document
+    .getElementById("riepilogo")
+    .innerHTML =
+
+    `<b>${sigla}</b><br>
+    ${descrizione}<br><br>
+
+    Bobina: ${bobina}<br>
+
+    ${no} NO -
+    ${nc} NC -
+    ${sc} SC<br><br>
+
+    Diodo: ${diodo}<br>
+    Filtro: ${filtro}`;
+
+}
+
+aggiungiContatto();
+
+</script>
+
+</body>
+</html>
