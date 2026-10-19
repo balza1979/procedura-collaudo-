@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 
@@ -11,9 +12,13 @@ initial-scale=1.0,
 maximum-scale=1.0,
 user-scalable=no">
 
-<title>Test Componenti</title>
+<title>Creazione Relè e Contattori</title>
 
 <style>
+
+*{
+    box-sizing:border-box;
+}
 
 body{
     font-family:Arial, Helvetica, sans-serif;
@@ -21,49 +26,96 @@ body{
     padding:15px;
 }
 
+h1{
+    text-align:center;
+}
+
 .box{
+
     background:white;
+
     padding:15px;
+
     margin-bottom:15px;
+
     border-radius:12px;
+
     box-shadow:0 2px 8px rgba(0,0,0,.10);
+
 }
 
 label{
+
     display:block;
+
     margin-top:10px;
+
     font-weight:bold;
+
 }
 
 input,
-select{
+select,
+textarea{
+
     width:100%;
+
     padding:10px;
+
     margin-top:5px;
+
+    font-size:16px;
+
 }
 
 button{
+
     width:100%;
+
     padding:15px;
-    margin-top:15px;
-    font-size:16px;
+
+    margin-top:10px;
+
+    font-size:18px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#0066cc;
+
+    color:white;
+
+    cursor:pointer;
+
+}
+
+button:hover{
+
+    background:#004e9c;
+
 }
 
 .contatto{
-    border:1px solid #ddd;
-    padding:10px;
-    border-radius:8px;
-    margin-top:10px;
+
+    border:1px solid #ccc;
+
+    padding:12px;
+
+    margin-top:12px;
+
+    border-radius:10px;
+
     background:#fafafa;
+
 }
 
 .riepilogo{
-    background:#eef5ff;
-    border-left:5px solid #0066cc;
-}
 
-h1{
-    text-align:center;
+    background:#eef5ff;
+
+    border-left:5px solid #0066cc;
+
 }
 
 </style>
@@ -72,41 +124,60 @@ h1{
 
 <body>
 
-<h1>CREAZIONE COMPONENTE</h1>
+<h1>COMPONENTE</h1>
 
 <div class="box">
 
-<label>Tipo componente</label>
+<button onclick="window.location.href='index.html'">
+← TORNA AL MENU
+</button>
 
-<select>
+</div>
+
+<div class="box">
+
+<label>Tipo Componente</label>
+
+<select id="tipoComponente">
 
 <option>Relè 2 contatti</option>
+
 <option>Relè 4 contatti</option>
+
 <option>Mini Contattore</option>
+
 <option>Contattore</option>
 
 </select>
 
 <label>Sigla</label>
-<input id="sigla" type="text"
+
+<input
+id="sigla"
+type="text"
 placeholder="RFC"
 oninput="aggiornaRiepilogo()">
 
 <label>Descrizione</label>
-<input id="descrizione"
+
+<input
+id="descrizione"
 type="text"
 placeholder="Relè Fine Sicurezze"
 oninput="aggiornaRiepilogo()">
 
-<label>Bobina</label>
-<input id="bobina"
+<label>Tensione Bobina</label>
+
+<input
+id="bobina"
 type="text"
 placeholder="48 Vac"
 oninput="aggiornaRiepilogo()">
 
 <label>Diodo</label>
 
-<select id="diodo"
+<select
+id="diodo"
 onchange="aggiornaRiepilogo()">
 
 <option>No</option>
@@ -116,7 +187,8 @@ onchange="aggiornaRiepilogo()">
 
 <label>Filtro</label>
 
-<select id="filtro"
+<select
+id="filtro"
 onchange="aggiornaRiepilogo()">
 
 <option>No</option>
@@ -124,10 +196,13 @@ onchange="aggiornaRiepilogo()">
 
 </select>
 
-<label>Taglia Contattore</label>
-<input id="taglia"
+<label>Taglia</label>
+
+<input
+id="taglia"
 type="text"
-placeholder="9A / 12A / 18A">
+placeholder="9A / 12A / 18A"
+oninput="aggiornaRiepilogo()">
 
 </div>
 
@@ -147,14 +222,10 @@ Nessun dato
 
 <h3>CONTATTI</h3>
 
-<div id="contenitoreContatti">
-
-</div>
+<div id="contenitoreContatti"></div>
 
 <button onclick="aggiungiContatto()">
-
 + AGGIUNGI CONTATTO
-
 </button>
 
 </div>
@@ -179,6 +250,10 @@ Nessun dato
 
 </div>
 
+<button onclick="salvaComponente()">
+SALVA COMPONENTE
+</button>
+
 <script>
 
 let numeroContatto = 0;
@@ -193,36 +268,44 @@ function aggiungiContatto(){
 
         <h4>Contatto ${numeroContatto}</h4>
 
-        <label>Tipo</label>
+        <label>Tipo Contatto</label>
 
         <select
-            class="tipoContatto"
-            onchange="aggiornaRiepilogo()">
+        class="tipoContatto"
+        onchange="aggiornaRiepilogo()">
 
-            <option>NO</option>
-            <option>NC</option>
-            <option>SC</option>
+            <option>N.O.</option>
+
+            <option>N.C.</option>
+
+            <option>Scambio</option>
+
+            <option>N.O. Potenza</option>
+
+            <option>N.C. Potenza</option>
 
         </select>
 
         <label>Pagina Schema</label>
 
         <input
-            type="text"
-            placeholder="Pagina 4">
+        type="text"
+        placeholder="Pagina 4">
 
         <label>Funzione</label>
 
         <input
-            type="text"
-            placeholder="Controllo Contattori">
+        type="text"
+        placeholder="Controllo Contattori">
 
     </div>
 
     `;
 
     document
-    .getElementById("contenitoreContatti")
+    .getElementById(
+        "contenitoreContatti"
+    )
     .insertAdjacentHTML(
         "beforeend",
         html
@@ -237,57 +320,128 @@ function aggiornaRiepilogo(){
     let no = 0;
     let nc = 0;
     let sc = 0;
+    let noPot = 0;
+    let ncPot = 0;
 
     document
     .querySelectorAll(".tipoContatto")
     .forEach(c=>{
 
-        if(c.value==="NO") no++;
-        if(c.value==="NC") nc++;
-        if(c.value==="SC") sc++;
+        switch(c.value){
+
+            case "N.O.":
+                no++;
+                break;
+
+            case "N.C.":
+                nc++;
+                break;
+
+            case "Scambio":
+                sc++;
+                break;
+
+            case "N.O. Potenza":
+                noPot++;
+                break;
+
+            case "N.C. Potenza":
+                ncPot++;
+                break;
+        }
 
     });
 
+    let riepilogoContatti = [];
+
+    if(no>0)
+        riepilogoContatti.push(
+            no + " N.O."
+        );
+
+    if(nc>0)
+        riepilogoContatti.push(
+            nc + " N.C."
+        );
+
+    if(sc>0)
+        riepilogoContatti.push(
+            sc + " SCAMBIO"
+        );
+
+    if(noPot>0)
+        riepilogoContatti.push(
+            noPot + " N.O. POTENZA"
+        );
+
+    if(ncPot>0)
+        riepilogoContatti.push(
+            ncPot + " N.C. POTENZA"
+        );
+
     let sigla =
     document
-    .getElementById("sigla")
-    .value;
+    .getElementById(
+        "sigla"
+    ).value;
 
     let descrizione =
     document
-    .getElementById("descrizione")
-    .value;
+    .getElementById(
+        "descrizione"
+    ).value;
 
     let bobina =
     document
-    .getElementById("bobina")
-    .value;
+    .getElementById(
+        "bobina"
+    ).value;
 
     let diodo =
     document
-    .getElementById("diodo")
-    .value;
+    .getElementById(
+        "diodo"
+    ).value;
 
     let filtro =
     document
-    .getElementById("filtro")
-    .value;
+    .getElementById(
+        "filtro"
+    ).value;
+
+    let taglia =
+    document
+    .getElementById(
+        "taglia"
+    ).value;
 
     document
-    .getElementById("riepilogo")
-    .innerHTML =
+    .getElementById(
+        "riepilogo"
+    ).innerHTML =
 
-    `<b>${sigla}</b><br>
+    `<b>${sigla}</b><br><br>
+
     ${descrizione}<br><br>
 
     Bobina: ${bobina}<br>
 
-    ${no} NO -
-    ${nc} NC -
-    ${sc} SC<br><br>
+    ${riepilogoContatti.join("<br>")}<br><br>
 
     Diodo: ${diodo}<br>
-    Filtro: ${filtro}`;
+
+    Filtro: ${filtro}<br>
+
+    Taglia: ${taglia}`;
+
+}
+
+function salvaComponente(){
+
+    alert(
+        "VERSIONE TEST\n\n" +
+        "In futuro salverà nel localStorage."
+    );
 
 }
 
