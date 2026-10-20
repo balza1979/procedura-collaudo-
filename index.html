@@ -30,55 +30,105 @@ h1{
 }
 
 .box{
+
     background:white;
+
     padding:15px;
+
     margin-bottom:15px;
+
     border-radius:12px;
+
     box-shadow:0 2px 8px rgba(0,0,0,.10);
+
 }
 
 label{
+
     display:block;
+
     margin-top:10px;
+
     font-weight:bold;
+
 }
 
 input,
 select,
 textarea{
+
     width:100%;
+
     padding:10px;
+
     margin-top:5px;
+
     font-size:16px;
+
 }
 
 button{
+
     width:100%;
+
     padding:15px;
+
     margin-top:10px;
+
     font-size:18px;
+
     border:none;
+
     border-radius:10px;
+
     background:#0066cc;
+
     color:white;
+
     cursor:pointer;
+
 }
 
 button:hover{
-    background:#004e9c;
+
+    background:#0050a0;
+
 }
 
 .contatto{
+
     border:1px solid #ccc;
+
     padding:12px;
-    margin-top:12px;
+
+    margin-top:15px;
+
     border-radius:10px;
+
     background:#fafafa;
+
 }
 
-.riepilogo{
+.sticky{
+
+    position:sticky;
+
+    top:10px;
+
+    z-index:1000;
+
     background:#eef5ff;
-    border-left:5px solid #0066cc;
+
+    border-left:6px solid #0066cc;
+
+}
+
+#riepilogo{
+
+    white-space:pre-line;
+
+    line-height:1.5;
+
 }
 
 </style>
@@ -92,12 +142,28 @@ button:hover{
 <div class="box">
 
 <button onclick="window.location.href='index.html'">
+
 ← TORNA AL MENU
+
 </button>
 
 </div>
 
+<div class="box sticky">
+
+<h3>RIEPILOGO COMPONENTE</h3>
+
+<div id="riepilogo">
+
+NESSUN DATO
+
+</div>
+
+</div>
+
 <div class="box">
+
+<h3>DATI COMPONENTE</h3>
 
 <label>Tipo Componente</label>
 
@@ -166,18 +232,6 @@ oninput="aggiornaRiepilogo()">
 
 </div>
 
-<div class="box riepilogo">
-
-<h3>RIEPILOGO AUTOMATICO</h3>
-
-<div id="riepilogo">
-
-Nessun dato
-
-</div>
-
-</div>
-
 <div class="box">
 
 <h3>CONTATTI</h3>
@@ -185,7 +239,9 @@ Nessun dato
 <div id="contenitoreContatti"></div>
 
 <button onclick="aggiungiContatto()">
+
 + AGGIUNGI CONTATTO
+
 </button>
 
 </div>
@@ -211,7 +267,9 @@ Nessun dato
 </div>
 
 <button onclick="salvaComponente()">
+
 SALVA COMPONENTE
+
 </button>
 
 <script>
@@ -222,7 +280,7 @@ function aggiungiContatto(){
 
     numeroContatto++;
 
-    let html = `
+    const html = `
 
     <div class="contatto">
 
@@ -231,8 +289,8 @@ function aggiungiContatto(){
         <label>Tipo Contatto</label>
 
         <select
-        class="tipoContatto"
-        onchange="aggiornaRiepilogo()">
+            class="tipoContatto"
+            onchange="aggiornaRiepilogo()">
 
             <option>N.O.</option>
             <option>N.C.</option>
@@ -285,7 +343,7 @@ function aggiornaRiepilogo(){
 
     document
     .querySelectorAll(".tipoContatto")
-    .forEach(c=>{
+    .forEach(c => {
 
         switch(c.value){
 
@@ -308,68 +366,71 @@ function aggiornaRiepilogo(){
             case "N.C. Potenza":
                 ncPot++;
                 break;
+
         }
 
     });
 
-    let riepilogoContatti = [];
+    let elenco = [];
 
     if(no > 0)
-        riepilogoContatti.push(no + " N.O.");
+        elenco.push(`${no} N.O.`);
 
     if(nc > 0)
-        riepilogoContatti.push(nc + " N.C.");
+        elenco.push(`${nc} N.C.`);
 
     if(sc > 0)
-        riepilogoContatti.push(sc + " SCAMBIO");
+        elenco.push(`${sc} SCAMBIO`);
 
     if(noPot > 0)
-        riepilogoContatti.push(noPot + " N.O. POTENZA");
+        elenco.push(`${noPot} N.O. POTENZA`);
 
     if(ncPot > 0)
-        riepilogoContatti.push(ncPot + " N.C. POTENZA");
+        elenco.push(`${ncPot} N.C. POTENZA`);
 
-    let sigla =
-    document.getElementById("sigla").value;
+    const sigla =
+        document.getElementById("sigla").value;
 
-    let descrizione =
-    document.getElementById("descrizione").value;
+    const descrizione =
+        document.getElementById("descrizione").value;
 
-    let bobina =
-    document.getElementById("bobina").value;
+    const bobina =
+        document.getElementById("bobina").value;
 
-    let diodo =
-    document.getElementById("diodo").value;
+    const diodo =
+        document.getElementById("diodo").value;
 
-    let filtro =
-    document.getElementById("filtro").value;
+    const filtro =
+        document.getElementById("filtro").value;
 
-    let taglia =
-    document.getElementById("taglia").value;
+    const taglia =
+        document.getElementById("taglia").value;
 
-    document
-    .getElementById("riepilogo")
-    .innerHTML =
+    document.getElementById("riepilogo").innerHTML =
 
-    `<b>${sigla}</b><br><br>
+`
+<b>${sigla || "COMPONENTE NON DEFINITO"}</b>
 
-    ${descrizione}<br><br>
+${descrizione}
 
-    Bobina: ${bobina}<br><br>
+${bobina ? "Bobina: " + bobina : ""}
 
-    ${riepilogoContatti.join("<br>")}<br><br>
+${elenco.join("<br>")}
 
-    Diodo: ${diodo}<br>
-    Filtro: ${filtro}<br>
-    Taglia: ${taglia}`;
+${diodo === "Si" ? "Diodo: SI" : ""}
+
+${filtro === "Si" ? "Filtro: SI" : ""}
+
+${taglia ? "Taglia: " + taglia : ""}
+`;
 
 }
 
 function salvaComponente(){
 
     alert(
-    "Versione test.\n\n" +
-    "Successivamente il componente verrà salvato in LocalStorage."
+        "Versione test.\n\n" +
+        "Successivamente verrà salvato nel LocalStorage."
     );
 
 }
@@ -381,3 +442,4 @@ aggiungiContatto();
 </body>
 
 </html>
+``
