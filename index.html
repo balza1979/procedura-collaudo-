@@ -127,9 +127,9 @@ button:hover{
 
 #riepilogo{
 
-    line-height:1.2;
+    line-height:1.3;
 
-    font-size:14px;
+    font-size:13px;
 
 }
 
@@ -391,13 +391,13 @@ function aggiornaRiepilogo(){
         elenco.push(nc + " N.C.");
 
     if(sc > 0)
-        elenco.push(sc + " SC");
+        elenco.push(sc + " SCAMBIO");
 
     if(noPot > 0)
-        elenco.push(noPot + " N.O.P");
+        elenco.push(noPot + " N.O. POTENZA");
 
     if(ncPot > 0)
-        elenco.push(ncPot + " N.C.P");
+        elenco.push(ncPot + " N.C. POTENZA");
 
     const sigla =
         document.getElementById("sigla").value;
@@ -417,35 +417,31 @@ function aggiornaRiepilogo(){
     const taglia =
         document.getElementById("taglia").value;
 
-    let infoExtra = [];
-
-    if(diodo === "Si")
-        infoExtra.push("Diodo");
-
-    if(filtro === "Si")
-        infoExtra.push("Filtro");
-
     document.getElementById("riepilogo").innerHTML =
 
 `
-<b>${sigla || "NUOVO COMPONENTE"}</b>
+<b style="font-size:16px;">
+${sigla || "NUOVO COMPONENTE"}
+</b>
 
-${bobina ? " | " + bobina : ""}
+${descrizione ? "<br>" + descrizione : ""}
 
-<br>
+${bobina ? "<br><br>Bobina: " + bobina : ""}
 
-${elenco.join(" | ")}
+${elenco.length > 0
+? "<br><br>" + elenco.join("<br>")
+: ""}
 
-${infoExtra.length > 0
-? "<br>" + infoExtra.join(" | ")
+${diodo === "Si"
+? "<br><br>Diodo: Si"
+: ""}
+
+${filtro === "Si"
+? "<br>Filtro: Si"
 : ""}
 
 ${taglia
-? "<br>Taglia " + taglia
-: ""}
-
-${descrizione
-? "<br><small>" + descrizione + "</small>"
+? "<br><br>Taglia: " + taglia
 : ""}
 `;
 
