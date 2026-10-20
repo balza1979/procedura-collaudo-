@@ -113,21 +113,23 @@ button:hover{
 
     position:sticky;
 
-    top:10px;
+    top:5px;
 
     z-index:1000;
 
     background:#eef5ff;
 
-    border-left:6px solid #0066cc;
+    border-left:4px solid #0066cc;
+
+    padding:8px !important;
 
 }
 
 #riepilogo{
 
-    white-space:pre-line;
+    line-height:1.2;
 
-    line-height:1.5;
+    font-size:14px;
 
 }
 
@@ -151,11 +153,20 @@ button:hover{
 
 <div class="box sticky">
 
-<h3>RIEPILOGO COMPONENTE</h3>
+<div
+style="
+font-size:12px;
+font-weight:bold;
+margin-bottom:4px;
+">
+
+RIEPILOGO
+
+</div>
 
 <div id="riepilogo">
 
-NESSUN DATO
+NUOVO COMPONENTE
 
 </div>
 
@@ -374,19 +385,19 @@ function aggiornaRiepilogo(){
     let elenco = [];
 
     if(no > 0)
-        elenco.push(`${no} N.O.`);
+        elenco.push(no + " N.O.");
 
     if(nc > 0)
-        elenco.push(`${nc} N.C.`);
+        elenco.push(nc + " N.C.");
 
     if(sc > 0)
-        elenco.push(`${sc} SCAMBIO`);
+        elenco.push(sc + " SC");
 
     if(noPot > 0)
-        elenco.push(`${noPot} N.O. POTENZA`);
+        elenco.push(noPot + " N.O.P");
 
     if(ncPot > 0)
-        elenco.push(`${ncPot} N.C. POTENZA`);
+        elenco.push(ncPot + " N.C.P");
 
     const sigla =
         document.getElementById("sigla").value;
@@ -406,22 +417,36 @@ function aggiornaRiepilogo(){
     const taglia =
         document.getElementById("taglia").value;
 
+    let infoExtra = [];
+
+    if(diodo === "Si")
+        infoExtra.push("Diodo");
+
+    if(filtro === "Si")
+        infoExtra.push("Filtro");
+
     document.getElementById("riepilogo").innerHTML =
 
 `
-<b>${sigla || "COMPONENTE NON DEFINITO"}</b>
+<b>${sigla || "NUOVO COMPONENTE"}</b>
 
-${descrizione}
+${bobina ? " | " + bobina : ""}
 
-${bobina ? "Bobina: " + bobina : ""}
+<br>
 
-${elenco.join("<br>")}
+${elenco.join(" | ")}
 
-${diodo === "Si" ? "Diodo: SI" : ""}
+${infoExtra.length > 0
+? "<br>" + infoExtra.join(" | ")
+: ""}
 
-${filtro === "Si" ? "Filtro: SI" : ""}
+${taglia
+? "<br>Taglia " + taglia
+: ""}
 
-${taglia ? "Taglia: " + taglia : ""}
+${descrizione
+? "<br><small>" + descrizione + "</small>"
+: ""}
 `;
 
 }
@@ -429,8 +454,8 @@ ${taglia ? "Taglia: " + taglia : ""}
 function salvaComponente(){
 
     alert(
-        "Versione test.\n\n" +
-        "Successivamente verrà salvato nel LocalStorage."
+        "Passo successivo:\n\n" +
+        "salvataggio reale nel LocalStorage."
     );
 
 }
@@ -442,4 +467,3 @@ aggiungiContatto();
 </body>
 
 </html>
-``
