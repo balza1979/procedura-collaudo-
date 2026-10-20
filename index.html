@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it">
 
@@ -31,91 +30,55 @@ h1{
 }
 
 .box{
-
     background:white;
-
     padding:15px;
-
     margin-bottom:15px;
-
     border-radius:12px;
-
     box-shadow:0 2px 8px rgba(0,0,0,.10);
-
 }
 
 label{
-
     display:block;
-
     margin-top:10px;
-
     font-weight:bold;
-
 }
 
 input,
 select,
 textarea{
-
     width:100%;
-
     padding:10px;
-
     margin-top:5px;
-
     font-size:16px;
-
 }
 
 button{
-
     width:100%;
-
     padding:15px;
-
     margin-top:10px;
-
     font-size:18px;
-
     border:none;
-
     border-radius:10px;
-
     background:#0066cc;
-
     color:white;
-
     cursor:pointer;
-
 }
 
 button:hover{
-
     background:#004e9c;
-
 }
 
 .contatto{
-
     border:1px solid #ccc;
-
     padding:12px;
-
     margin-top:12px;
-
     border-radius:10px;
-
     background:#fafafa;
-
 }
 
 .riepilogo{
-
     background:#eef5ff;
-
     border-left:5px solid #0066cc;
-
 }
 
 </style>
@@ -141,11 +104,8 @@ button:hover{
 <select id="tipoComponente">
 
 <option>Relè 2 contatti</option>
-
 <option>Relè 4 contatti</option>
-
 <option>Mini Contattore</option>
-
 <option>Contattore</option>
 
 </select>
@@ -275,13 +235,9 @@ function aggiungiContatto(){
         onchange="aggiornaRiepilogo()">
 
             <option>N.O.</option>
-
             <option>N.C.</option>
-
             <option>Scambio</option>
-
             <option>N.O. Potenza</option>
-
             <option>N.C. Potenza</option>
 
         </select>
@@ -290,22 +246,26 @@ function aggiungiContatto(){
 
         <input
         type="text"
-        placeholder="Pagina 4">
+        placeholder="Pag. 4">
+
+        <label>Posizione Schema</label>
+
+        <input
+        type="text"
+        placeholder="D5">
 
         <label>Funzione</label>
 
         <input
         type="text"
-        placeholder="Controllo Contattori">
+        placeholder="Abilitazione Marcia">
 
     </div>
 
     `;
 
     document
-    .getElementById(
-        "contenitoreContatti"
-    )
+    .getElementById("contenitoreContatti")
     .insertAdjacentHTML(
         "beforeend",
         html
@@ -354,84 +314,53 @@ function aggiornaRiepilogo(){
 
     let riepilogoContatti = [];
 
-    if(no>0)
-        riepilogoContatti.push(
-            no + " N.O."
-        );
+    if(no > 0)
+        riepilogoContatti.push(no + " N.O.");
 
-    if(nc>0)
-        riepilogoContatti.push(
-            nc + " N.C."
-        );
+    if(nc > 0)
+        riepilogoContatti.push(nc + " N.C.");
 
-    if(sc>0)
-        riepilogoContatti.push(
-            sc + " SCAMBIO"
-        );
+    if(sc > 0)
+        riepilogoContatti.push(sc + " SCAMBIO");
 
-    if(noPot>0)
-        riepilogoContatti.push(
-            noPot + " N.O. POTENZA"
-        );
+    if(noPot > 0)
+        riepilogoContatti.push(noPot + " N.O. POTENZA");
 
-    if(ncPot>0)
-        riepilogoContatti.push(
-            ncPot + " N.C. POTENZA"
-        );
+    if(ncPot > 0)
+        riepilogoContatti.push(ncPot + " N.C. POTENZA");
 
     let sigla =
-    document
-    .getElementById(
-        "sigla"
-    ).value;
+    document.getElementById("sigla").value;
 
     let descrizione =
-    document
-    .getElementById(
-        "descrizione"
-    ).value;
+    document.getElementById("descrizione").value;
 
     let bobina =
-    document
-    .getElementById(
-        "bobina"
-    ).value;
+    document.getElementById("bobina").value;
 
     let diodo =
-    document
-    .getElementById(
-        "diodo"
-    ).value;
+    document.getElementById("diodo").value;
 
     let filtro =
-    document
-    .getElementById(
-        "filtro"
-    ).value;
+    document.getElementById("filtro").value;
 
     let taglia =
-    document
-    .getElementById(
-        "taglia"
-    ).value;
+    document.getElementById("taglia").value;
 
     document
-    .getElementById(
-        "riepilogo"
-    ).innerHTML =
+    .getElementById("riepilogo")
+    .innerHTML =
 
     `<b>${sigla}</b><br><br>
 
     ${descrizione}<br><br>
 
-    Bobina: ${bobina}<br>
+    Bobina: ${bobina}<br><br>
 
     ${riepilogoContatti.join("<br>")}<br><br>
 
     Diodo: ${diodo}<br>
-
     Filtro: ${filtro}<br>
-
     Taglia: ${taglia}`;
 
 }
@@ -439,8 +368,8 @@ function aggiornaRiepilogo(){
 function salvaComponente(){
 
     alert(
-        "VERSIONE TEST\n\n" +
-        "In futuro salverà nel localStorage."
+    "Versione test.\n\n" +
+    "Successivamente il componente verrà salvato in LocalStorage."
     );
 
 }
@@ -450,4 +379,5 @@ aggiungiContatto();
 </script>
 
 </body>
+
 </html>
