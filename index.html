@@ -465,9 +465,86 @@ ${taglia
 }
 function salvaComponente(){
 
+    const componente = {
+
+        sigla:
+        document.getElementById("sigla").value.trim(),
+
+        tipo:
+        document.getElementById("tipoComponente").value,
+
+        descrizione:
+        document.getElementById("descrizione").value,
+
+        bobina:
+        document.getElementById("bobina").value,
+
+        diodo:
+        document.getElementById("diodo").value,
+
+        filtro:
+        document.getElementById("filtro").value,
+
+        taglia:
+        document.getElementById("taglia").value
+
+    };
+
+    if(componente.sigla === ""){
+
+        alert(
+        "Inserire almeno la sigla componente."
+        );
+
+        return;
+
+    }
+
+    const chiave =
+    componente.sigla +
+    "|" +
+    componente.tipo;
+
+    let archivio =
+    JSON.parse(
+        localStorage.getItem("archivioComponenti")
+    ) || {};
+
+    if(archivio[chiave]){
+
+        let risposta = confirm(
+
+            "COMPONENTE GIÀ PRESENTE\n\n" +
+
+            chiave +
+
+            "\n\nVuoi sovrascriverlo?"
+
+        );
+
+        if(!risposta){
+            return;
+        }
+
+    }
+
+    archivio[chiave] =
+    componente;
+
+    localStorage.setItem(
+
+        "archivioComponenti",
+
+        JSON.stringify(archivio)
+
+    );
+
     alert(
-        "Passo successivo:\n\n" +
-        "salvataggio reale nel LocalStorage."
+
+        "Componente salvato\n\n" +
+
+        chiave
+
     );
 
 }
