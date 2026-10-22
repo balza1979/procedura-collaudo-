@@ -503,7 +503,9 @@ function salvaComponente(){
     const chiave =
     componente.sigla +
     "|" +
-    componente.tipo;
+    componente.tipo +
+    "|" +
+    (componente.bobina || "Tensione non definita");
 
     let archivio =
     JSON.parse(
@@ -555,7 +557,7 @@ document
     aggiornaRiepilogo
 );
 aggiungiContatto();
-
+aggiornaRiepilogo();
 </script>
 
 </body>
