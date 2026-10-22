@@ -212,30 +212,32 @@ id="descrizione"
 type="text"
 placeholder="Inserisci descrizione"
 oninput="aggiornaRiepilogo()">
-
 <label>Tensione Bobina</label>
 
 <select
 id="bobina"
-onchange="aggiornaRiepilogo()">
+onchange="gestisciTensioneAltro()">
 
 <option value="">
 -- Seleziona tensione --
 </option>
 
 <option>12VDC</option>
-
 <option>24VDC</option>
-
 <option>48VDC</option>
-
 <option>110VAC</option>
-
 <option>230VAC</option>
-
 <option>400VAC</option>
+<option>ALTRO</option>
 
 </select>
+
+<input
+id="bobinaAltro"
+type="text"
+placeholder="Inserisci tensione personalizzata"
+style="display:none;"
+oninput="aggiornaRiepilogo()">
 
 <label>Diodo</label>
 
@@ -312,7 +314,29 @@ SALVA COMPONENTE
 <script>
 
 let numeroContatto = 0;
+function gestisciTensioneAltro(){
 
+    const bobina =
+    document.getElementById("bobina");
+
+    const bobinaAltro =
+    document.getElementById("bobinaAltro");
+
+    if(bobina.value === "ALTRO"){
+
+        bobinaAltro.style.display = "block";
+
+    }else{
+
+        bobinaAltro.style.display = "none";
+
+        bobinaAltro.value = "";
+
+    }
+
+    aggiornaRiepilogo();
+
+}
 function aggiungiContatto(){
 
     numeroContatto++;
@@ -434,8 +458,15 @@ function aggiornaRiepilogo(){
     const descrizione =
         document.getElementById("descrizione").value;
 
-    const bobina =
-        document.getElementById("bobina").value;
+  let bobina =
+document.getElementById("bobina").value;
+
+if(bobina === "ALTRO"){
+
+    bobina =
+    document.getElementById("bobinaAltro").value;
+
+}
 
     const diodo =
         document.getElementById("diodo").value;
@@ -560,7 +591,12 @@ function salvaComponente(){
         document.getElementById("descrizione").value,
 
         bobina:
-        document.getElementById("bobina").value,
+
+document.getElementById("bobina").value === "ALTRO"
+
+? document.getElementById("bobinaAltro").value
+
+: document.getElementById("bobina").value,
 
         diodo:
         document.getElementById("diodo").value,
