@@ -132,7 +132,17 @@ button:hover{
     font-size:13px;
 
 }
+.obbligatorioVuoto{
 
+    background:#ffd6d6;
+
+}
+
+.obbligatorioOk{
+
+    background:#d8ffd8;
+
+}
 </style>
 
 </head>
@@ -192,7 +202,7 @@ NUOVO COMPONENTE
 <input
 id="sigla"
 type="text"
-placeholder="RFC"
+placeholder="Inserisci sigla"
 oninput="aggiornaRiepilogo()">
 
 <label>Descrizione</label>
@@ -200,7 +210,7 @@ oninput="aggiornaRiepilogo()">
 <input
 id="descrizione"
 type="text"
-placeholder="Relè Fine Sicurezze"
+placeholder="Inserisci descrizione"
 oninput="aggiornaRiepilogo()">
 
 <label>Tensione Bobina</label>
@@ -208,7 +218,7 @@ oninput="aggiornaRiepilogo()">
 <input
 id="bobina"
 type="text"
-placeholder="48 Vac"
+placeholder="Inserisci tensione bobina"
 oninput="aggiornaRiepilogo()">
 
 <label>Diodo</label>
@@ -238,7 +248,7 @@ onchange="aggiornaRiepilogo()">
 <input
 id="taglia"
 type="text"
-placeholder="9A / 12A / 18A"
+placeholder="INSERISCI TALGIA CONTATTORE DXX"
 oninput="aggiornaRiepilogo()">
 
 </div>
@@ -315,13 +325,13 @@ function aggiungiContatto(){
 
         <input
         type="text"
-        placeholder="Pag. 4">
+        placeholder="Inserisci pagina schema">
 
         <label>Posizione Schema</label>
 
         <input
         type="text"
-        placeholder="D5">
+       placeholder="Es. D5">
 
         <label>Funzione</label>
 
@@ -462,7 +472,64 @@ ${taglia
 : ""}
 `;
 
+controllaCampiObbligatori();
+    
 }
+
+function controllaCampiObbligatori(){
+
+    const sigla =
+        document.getElementById("sigla");
+
+    const bobina =
+        document.getElementById("bobina");
+
+    if(sigla.value.trim() === ""){
+
+        sigla.classList.remove(
+            "obbligatorioOk"
+        );
+
+        sigla.classList.add(
+            "obbligatorioVuoto"
+        );
+
+    }else{
+
+        sigla.classList.remove(
+            "obbligatorioVuoto"
+        );
+
+        sigla.classList.add(
+            "obbligatorioOk"
+        );
+
+    }
+
+    if(bobina.value.trim() === ""){
+
+        bobina.classList.remove(
+            "obbligatorioOk"
+        );
+
+        bobina.classList.add(
+            "obbligatorioVuoto"
+        );
+
+    }else{
+
+        bobina.classList.remove(
+            "obbligatorioVuoto"
+        );
+
+        bobina.classList.add(
+            "obbligatorioOk"
+        );
+
+    }
+
+}
+    
 function salvaComponente(){
 
     const componente = {
@@ -490,16 +557,25 @@ function salvaComponente(){
 
     };
 
-    if(componente.sigla === ""){
+  if(componente.sigla === ""){
 
-        alert(
-        "Inserire almeno la sigla componente."
-        );
+    alert(
+    "Inserire la sigla componente."
+    );
 
-        return;
+    return;
 
-    }
+}
 
+if(componente.bobina === ""){
+
+    alert(
+    "Inserire la tensione della bobina."
+    );
+
+    return;
+
+}
     const chiave =
     componente.sigla +
     "|" +
@@ -557,7 +633,10 @@ document
     aggiornaRiepilogo
 );
 aggiungiContatto();
+
 aggiornaRiepilogo();
+
+controllaCampiObbligatori();
 </script>
 
 </body>
