@@ -215,11 +215,27 @@ oninput="aggiornaRiepilogo()">
 
 <label>Tensione Bobina</label>
 
-<input
+<select
 id="bobina"
-type="text"
-placeholder="Inserisci tensione bobina"
-oninput="aggiornaRiepilogo()">
+onchange="aggiornaRiepilogo()">
+
+<option value="">
+-- Seleziona tensione --
+</option>
+
+<option>12VDC</option>
+
+<option>24VDC</option>
+
+<option>48VDC</option>
+
+<option>110VAC</option>
+
+<option>230VAC</option>
+
+<option>400VAC</option>
+
+</select>
 
 <label>Diodo</label>
 
