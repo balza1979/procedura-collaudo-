@@ -1,1 +1,697 @@
-x
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no">
+
+<title>Creazione Relè e Contattori</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f2f2f2;
+    padding:15px;
+}
+
+h1{
+    text-align:center;
+}
+
+.box{
+
+    background:white;
+
+    padding:15px;
+
+    margin-bottom:15px;
+
+    border-radius:12px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.10);
+
+}
+
+label{
+
+    display:block;
+
+    margin-top:10px;
+
+    font-weight:bold;
+
+}
+
+input,
+select,
+textarea{
+
+    width:100%;
+
+    padding:10px;
+
+    margin-top:5px;
+
+    font-size:16px;
+
+}
+
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    margin-top:10px;
+
+    font-size:18px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#0066cc;
+
+    color:white;
+
+    cursor:pointer;
+
+}
+
+button:hover{
+
+    background:#0050a0;
+
+}
+
+.contatto{
+
+    border:1px solid #ccc;
+
+    padding:12px;
+
+    margin-top:15px;
+
+    border-radius:10px;
+
+    background:#fafafa;
+
+}
+
+.sticky{
+
+    position:sticky;
+
+    top:5px;
+
+    z-index:1000;
+
+    background:#eef5ff;
+
+    border-left:4px solid #0066cc;
+
+    padding:8px !important;
+
+}
+
+#riepilogo{
+
+    line-height:1.3;
+
+    font-size:13px;
+
+}
+.obbligatorioVuoto{
+
+    background:#ffd6d6;
+
+}
+
+.obbligatorioOk{
+
+    background:#d8ffd8;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>COMPONENTE</h1>
+
+<div class="box">
+
+<button onclick="window.location.href='index.html'">
+
+← TORNA AL MENU
+
+</button>
+
+</div>
+
+<div class="box sticky">
+
+<div
+style="
+font-size:12px;
+font-weight:bold;
+margin-bottom:4px;
+">
+
+RIEPILOGO
+
+</div>
+
+<div id="riepilogo">
+
+NUOVO COMPONENTE
+
+</div>
+
+</div>
+
+<div class="box">
+
+<h3>DATI COMPONENTE</h3>
+
+<label>Tipo Componente</label>
+
+<select id="tipoComponente">
+
+<option>Relè 2 contatti</option>
+<option>Relè 4 contatti</option>
+<option>Mini Contattore</option>
+<option>Contattore</option>
+
+</select>
+
+<label>Sigla</label>
+
+<input
+id="sigla"
+type="text"
+placeholder="Inserisci sigla"
+oninput="aggiornaRiepilogo()">
+
+<label>Descrizione</label>
+
+<input
+id="descrizione"
+type="text"
+placeholder="Inserisci descrizione"
+oninput="aggiornaRiepilogo()">
+<label>Tensione Bobina</label>
+
+<select
+id="bobina"
+onchange="gestisciTensioneAltro()">
+
+<option value="">
+-- Seleziona tensione --
+</option>
+
+<option>12VDC</option>
+<option>24VDC</option>
+<option>48VDC</option>
+<option>110VAC</option>
+<option>230VAC</option>
+<option>400VAC</option>
+<option>ALTRO</option>
+
+</select>
+
+<input
+id="bobinaAltro"
+type="text"
+placeholder="Inserisci tensione personalizzata"
+style="display:none;"
+oninput="aggiornaRiepilogo()">
+
+<label>Diodo</label>
+
+<select
+id="diodo"
+onchange="aggiornaRiepilogo()">
+
+<option>No</option>
+<option>Si</option>
+
+</select>
+
+<label>Filtro</label>
+
+<select
+id="filtro"
+onchange="aggiornaRiepilogo()">
+
+<option>No</option>
+<option>Si</option>
+
+</select>
+
+<label>Taglia</label>
+
+<input
+id="taglia"
+type="text"
+placeholder="INSERISCI TALGIA CONTATTORE DXX"
+oninput="aggiornaRiepilogo()">
+
+</div>
+
+<div class="box">
+
+<h3>CONTATTI</h3>
+
+<div id="contenitoreContatti"></div>
+
+<button onclick="aggiungiContatto()">
+
++ AGGIUNGI CONTATTO
+
+</button>
+
+</div>
+
+<div class="box">
+
+<h3>CAMPI FUTURI</h3>
+
+<input type="text" placeholder="Campo libero 1">
+<br><br>
+
+<input type="text" placeholder="Campo libero 2">
+<br><br>
+
+<input type="text" placeholder="Campo libero 3">
+<br><br>
+
+<input type="text" placeholder="Campo libero 4">
+<br><br>
+
+<input type="text" placeholder="Campo libero 5">
+
+</div>
+
+<button onclick="salvaComponente()">
+
+SALVA COMPONENTE
+
+</button>
+
+<script>
+
+let numeroContatto = 0;
+function gestisciTensioneAltro(){
+
+    const bobina =
+    document.getElementById("bobina");
+
+    const bobinaAltro =
+    document.getElementById("bobinaAltro");
+
+    if(bobina.value === "ALTRO"){
+
+        bobinaAltro.style.display = "block";
+
+    }else{
+
+        bobinaAltro.style.display = "none";
+
+        bobinaAltro.value = "";
+
+    }
+
+    aggiornaRiepilogo();
+
+}
+function aggiungiContatto(){
+
+    numeroContatto++;
+
+    const html = `
+
+    <div class="contatto">
+
+        <h4>Contatto ${numeroContatto}</h4>
+
+        <label>Tipo Contatto</label>
+
+        <select
+            class="tipoContatto"
+            onchange="aggiornaRiepilogo()">
+
+            <option>N.O.</option>
+            <option>N.C.</option>
+            <option>Scambio</option>
+            <option>N.O. Potenza</option>
+            <option>N.C. Potenza</option>
+
+        </select>
+
+        <label>Pagina Schema</label>
+
+        <input
+        type="text"
+        placeholder="Inserisci pagina schema">
+
+        <label>Posizione Schema</label>
+
+        <input
+        type="text"
+       placeholder="Es. D5">
+
+        <label>Funzione</label>
+
+        <input
+        type="text"
+        placeholder="ES : Abilitazione Marcia">
+
+    </div>
+
+    `;
+
+    document
+    .getElementById("contenitoreContatti")
+    .insertAdjacentHTML(
+        "beforeend",
+        html
+    );
+
+    aggiornaRiepilogo();
+
+}
+
+function aggiornaRiepilogo(){
+
+    let no = 0;
+    let nc = 0;
+    let sc = 0;
+    let noPot = 0;
+    let ncPot = 0;
+
+    document
+    .querySelectorAll(".tipoContatto")
+    .forEach(c => {
+
+        switch(c.value){
+
+            case "N.O.":
+                no++;
+                break;
+
+            case "N.C.":
+                nc++;
+                break;
+
+            case "Scambio":
+                sc++;
+                break;
+
+            case "N.O. Potenza":
+                noPot++;
+                break;
+
+            case "N.C. Potenza":
+                ncPot++;
+                break;
+
+        }
+
+    });
+
+    let elenco = [];
+
+    if(no > 0)
+        elenco.push(no + " N.O.");
+
+    if(nc > 0)
+        elenco.push(nc + " N.C.");
+
+    if(sc > 0)
+        elenco.push(sc + " SCAMBIO");
+
+    if(noPot > 0)
+        elenco.push(noPot + " N.O. POTENZA");
+
+    if(ncPot > 0)
+        elenco.push(ncPot + " N.C. POTENZA");
+
+    const tipo =
+        document.getElementById("tipoComponente").value;
+
+    const sigla =
+        document.getElementById("sigla").value;
+
+    const descrizione =
+        document.getElementById("descrizione").value;
+
+  let bobina =
+document.getElementById("bobina").value;
+
+if(bobina === "ALTRO"){
+
+    bobina =
+    document.getElementById("bobinaAltro").value;
+
+}
+
+    const diodo =
+        document.getElementById("diodo").value;
+
+    const filtro =
+        document.getElementById("filtro").value;
+
+    const taglia =
+        document.getElementById("taglia").value;
+
+    document.getElementById("riepilogo").innerHTML =
+
+`
+<b style="font-size:16px;">
+${sigla || "NUOVO COMPONENTE"}
+</b>
+
+<br>
+
+<span style="
+font-size:12px;
+color:#666;
+font-weight:bold;
+">
+${tipo}
+</span>
+
+${descrizione
+? "<br><br>" + descrizione
+: ""}
+
+${bobina
+? "<br><br>Bobina: " + bobina
+: ""}
+
+${elenco.length > 0
+? "<br><br>" + elenco.join("<br>")
+: ""}
+
+${diodo === "Si"
+? "<br><br>Diodo: Si"
+: ""}
+
+${filtro === "Si"
+? "<br>Filtro: Si"
+: ""}
+
+${taglia
+? "<br><br>Taglia: " + taglia
+: ""}
+`;
+
+controllaCampiObbligatori();
+    
+}
+
+function controllaCampiObbligatori(){
+
+    const sigla =
+        document.getElementById("sigla");
+
+    const bobina =
+        document.getElementById("bobina");
+
+    if(sigla.value.trim() === ""){
+
+        sigla.classList.remove(
+            "obbligatorioOk"
+        );
+
+        sigla.classList.add(
+            "obbligatorioVuoto"
+        );
+
+    }else{
+
+        sigla.classList.remove(
+            "obbligatorioVuoto"
+        );
+
+        sigla.classList.add(
+            "obbligatorioOk"
+        );
+
+    }
+
+    if(bobina.value.trim() === ""){
+
+        bobina.classList.remove(
+            "obbligatorioOk"
+        );
+
+        bobina.classList.add(
+            "obbligatorioVuoto"
+        );
+
+    }else{
+
+        bobina.classList.remove(
+            "obbligatorioVuoto"
+        );
+
+        bobina.classList.add(
+            "obbligatorioOk"
+        );
+
+    }
+
+}
+    
+function salvaComponente(){
+
+    const componente = {
+
+        sigla:
+        document.getElementById("sigla").value.trim(),
+
+        tipo:
+        document.getElementById("tipoComponente").value,
+
+        descrizione:
+        document.getElementById("descrizione").value,
+
+        bobina:
+
+document.getElementById("bobina").value === "ALTRO"
+
+? document.getElementById("bobinaAltro").value
+
+: document.getElementById("bobina").value,
+
+        diodo:
+        document.getElementById("diodo").value,
+
+        filtro:
+        document.getElementById("filtro").value,
+
+        taglia:
+        document.getElementById("taglia").value
+
+    };
+
+  if(componente.sigla === ""){
+
+    alert(
+    "Inserire la sigla componente."
+    );
+
+    return;
+
+}
+
+if(componente.bobina === ""){
+
+    alert(
+    "Inserire la tensione della bobina."
+    );
+
+    return;
+
+}
+  const chiave =
+    componente.sigla +
+    "|" +
+    componente.tipo +
+    "|" +
+    componente.bobina;
+
+
+    let archivio =
+    JSON.parse(
+        localStorage.getItem("archivioComponenti")
+    ) || {};
+
+    if(archivio[chiave]){
+
+        let risposta = confirm(
+
+            "COMPONENTE GIÀ PRESENTE\n\n" +
+
+            chiave +
+
+            "\n\nVuoi sovrascriverlo?"
+
+        );
+
+        if(!risposta){
+            return;
+        }
+
+    }
+
+    archivio[chiave] =
+    componente;
+
+    localStorage.setItem(
+
+        "archivioComponenti",
+
+        JSON.stringify(archivio)
+
+    );
+
+    alert(
+
+        "Componente salvato\n\n" +
+
+        chiave
+
+    );
+
+}
+document
+.getElementById("tipoComponente")
+.addEventListener(
+    "change",
+    aggiornaRiepilogo
+);
+aggiungiContatto();
+
+aggiornaRiepilogo();
+
+controllaCampiObbligatori();
+</script>
+
+</body>
+
+</html>
