@@ -576,12 +576,13 @@ if(componente.bobina === ""){
     return;
 
 }
-    const chiave =
+  const chiave =
     componente.sigla +
     "|" +
     componente.tipo +
     "|" +
-    (componente.bobina || "Tensione non definita");
+    componente.bobina;
+
 
     let archivio =
     JSON.parse(
