@@ -7,7 +7,9 @@
 
 <meta name="viewport"
 content="width=device-width,
-initial-scale=1.0">
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no">
 
 <title>Progetto Collaudi</title>
 
@@ -91,6 +93,20 @@ button:hover{
 
 }
 
+.sezione{
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    color:#666;
+
+    margin-bottom:10px;
+
+    margin-top:10px;
+
+}
+
 </style>
 
 </head>
@@ -101,23 +117,43 @@ button:hover{
 
 <div class="box">
 
-<button onclick="window.location.href='crea_rele.html'">
+<div class="sezione">
+COMPONENTI
+</div>
+
+<button onclick="window.location.href='componenti/crea_rele.html'">
 RELÈ / CONTATTORI
 </button>
 
-<button onclick="window.location.href='componenti.html'">
-ARCHIVIO COMPONENTI
-</button>
-
-<button onclick="window.location.href='trasformatori.html'">
+<button onclick="window.location.href='componenti/trasformatori.html'">
 TRASFORMATORI
 </button>
 
-<button onclick="window.location.href='morsettiere.html'">
+<button onclick="window.location.href='componenti/morsettiere.html'">
 MORSETTIERE
 </button>
 
-<button onclick="window.location.href='collaudo.html'">
+</div>
+
+<div class="box">
+
+<div class="sezione">
+ARCHIVI
+</div>
+
+<button onclick="window.location.href='archivio/componenti.html'">
+ARCHIVIO COMPONENTI
+</button>
+
+</div>
+
+<div class="box">
+
+<div class="sezione">
+COLLAUDI
+</div>
+
+<button onclick="window.location.href='collaudi/collaudo.html'">
 NUOVO COLLAUDO
 </button>
 
@@ -127,10 +163,12 @@ NUOVO COLLAUDO
 
 <div class="note">
 
-Versione sviluppo<br>
+Versione sviluppo
 
-Da qui accederai a tutte le pagine
-di test e future sezioni dell'app.
+<br><br>
+
+Da questa pagina accederai a tutte le sezioni
+dell'applicazione.
 
 </div>
 
@@ -139,4 +177,3 @@ di test e future sezioni dell'app.
 </body>
 
 </html>
-``
